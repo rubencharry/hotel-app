@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Hotel;
+use App\Models\Room;
 use Illuminate\Support\Facades\Validator;
 
 class HotelService
@@ -20,6 +21,18 @@ class HotelService
         }
     }
 
+    public function getHotelById($id){
+        $hotel = Hotel::find($id);
+        if (!$hotel) {
+            return [
+                'error' => 'Hotel do not exist.',
+                'status' => 404
+            ];
+        }
+        return $hotel;
+    }
+
+    
 
     public function createHotel($data)
     {

@@ -25,6 +25,16 @@ class HotelController extends Controller
         return response()->json($hotels, 200);
     }
 
+    public function get($id)
+    {
+        $result = $this->hotelService->getHotelById($id);
+
+        if (isset($result['error'])) {
+            return response()->json($result['error'], $result['status']);
+        }
+
+        return response()->json($result, 200);
+    }
 
     public function create(Request $request)
     {

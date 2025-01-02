@@ -5,6 +5,10 @@ const HotelService = {
     return await HotelApi.getAllHotels();
   },
 
+  async getHotelById(id) {
+    return await HotelApi.getHotelById(id);
+  },
+
   async addHotel(hotel) {
     return await HotelApi.createHotel(hotel);
   },

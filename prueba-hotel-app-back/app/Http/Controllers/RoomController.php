@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\RoomService;
+
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -20,17 +21,20 @@ class RoomController extends Controller
         return response()->json($rooms);
     }
 
+    public function get($id)
+    {
+        $room = $this->roomService->getRoomById($id);
+        return response()->json($room);
+    }
+
     public function create(Request $request)
     {
-
-        $room = $this->roomService->createRoom($request->all());
-        return response()->json($room, 201);
+        return $this->roomService->createRoom($request->all());
     }
 
     public function update(Request $request, $id)
     {
-        $room = $this->roomService->updateRoom($id, $request->all());
-        return response()->json($room);
+        return $room;
     }
 
     public function delete($id)

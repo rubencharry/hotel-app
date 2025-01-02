@@ -1,5 +1,7 @@
 <template>
-  <div class="p-4 border rounded-lg shadow-md">
+  <AppPreload v-if="loading" />
+
+  <div v-else class="p-4 border rounded-lg shadow-md">
     <h2 class="text-lg font-bold mb-4">{{ isEditing ? "Editar Hotel" : "Agregar Hotel" }}</h2>
     <form @submit.prevent="handleSubmit" class="my-4">
       <div class="mb-4">
@@ -28,7 +30,7 @@
       <button type="submit" class="bg-green-500 text-white mx-1 px-4 py-2 rounded hover:bg-green-600">
         {{ isEditing ? "Actualizar" : "Guardar" }}
       </button>
-      <button class="bg-gray-500 text-white mx-1 px-4 py-2 rounded hover:bg-gray-600"  @click.prevent="cancel">
+      <button class="bg-gray-500 text-white mx-1 px-4 py-2 rounded hover:bg-gray-600"  @click="cancel">
         Cancelar
       </button>
     </form>
@@ -36,39 +38,66 @@
 </template>
 
 <script>
+import AppPreload from "@/components/Preload.vue";
+import HotelService from "@/application/services/HotelService";
+
 export default {
-  props: {
-    isEditing: {
-      type: Boolean,
-      default: false,
-    },
-    initialData: {
-      type: Object,
-      default: () => ({
+  data() {
+    return {
+      hotel: {
         name: "",
         address: "",
         city: "",
         nit: "",
         max_rooms: null,
-      }),
-    },
-  },
-  data() {
-    return {
-      hotel: { ...this.initialData },
-      isSubmitting: false,
+      },
+      loading: true, 
     };
   },
+  components: {
+    AppPreload,
+  },
+  computed: {
+    isEditing() {
+      return this.$route.name === "EditHotel";
+    },
+  },
+  mounted() {
+    if (this.isEditing) {
+      this.loadHotel();
+    }
+  },
   methods: {
+    async loadHotel() {
+      this.loading = true; 
+      const hotelId = this.$route.params.id;
+      try {
+        const hotel = await HotelService.getHotelById(hotelId);
+        this.hotel = { ...hotel };
+      } catch (error) {
+        console.error("Error al cargar el hotel:", error);
+      }finally{
+        this.loading = false; 
+      }
+    },
     async handleSubmit() {
-      if (this.isSubmitting) return;
-
-      this.isSubmitting = true; 
-      await this.$emit("submit", this.hotel); 
-      this.isSubmitting = false; 
+      this.loading = true; 
+      try {
+        if (this.isEditing) {
+          await HotelService.updateHotel(this.$route.params.id, this.hotel);
+        } else {
+          await HotelService.addHotel(this.hotel);
+        }
+        this.$router.push({ name: "HotelList" });
+      } catch (error) {
+        console.error("Error al guardar el hotel:", error);
+        alert("Verifica que no exista un hotel ya registrado con este nombre o NIT.");
+      } finally{
+        this.loading = false; 
+      }
     },
     cancel() {
-      this.$emit("cancel");
+      this.$router.push({ name: "HotelList" });
     },
   },
 };

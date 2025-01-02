@@ -4,6 +4,7 @@ namespace App\Validators;
 
 use App\Models\Hotel;
 use App\Models\Room;
+use App\Models\RoomTypeAccommodation;
 use Illuminate\Validation\ValidationException;
 
 class RoomValidator
@@ -21,6 +22,7 @@ class RoomValidator
         $totalRooms = $hotel->rooms
             ->where('id', '!=', $roomId)
             ->sum('quantity') + $quantity;
+
 
         if ($totalRooms > $hotel->max_rooms) {
             throw ValidationException::withMessages([
@@ -51,10 +53,34 @@ class RoomValidator
         ->where('accommodation_id', $accommodationId)
         ->exists();
 
-            if ($exists) {
-                throw ValidationException::withMessages([
-                    'duplicate' => 'Ya existe una configuración con este tipo y acomodación para este hotel.',
-                ]);
+        if ($exists) {
+            throw ValidationException::withMessages([
+               'duplicate' => 'Ya existe una configuración con este tipo y acomodación para este hotel.',
+            ]);
+        }
+    }
+
+
+     /**
+     * Valida que la combinación de tipo de habitación y acomodación sea válida.
+     *
+     * @param int $roomTypeId
+     * @param int $accommodationId
+     * @throws ValidationException
+     */
+    public static function validateRoomTypeAndAccommodation(
+        int $roomTypeId, 
+        int $accommodationId
+        )
+    {
+        $isValid = RoomTypeAccommodation::where('room_type_id', $roomTypeId)
+        ->where('accommodation_id', $accommodationId)
+        ->exists();
+
+        if (!$isValid) {
+            throw ValidationException::withMessages([
+                'invalid_combination' => 'La combinación de tipo de habitación y acomodación no es válida.',
+            ]);
         }
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Accommodation;
 use App\Models\Hotel;
 use App\Models\RoomType;
-use App\Models\Accommodation;
 use App\Models\Room;
+use App\Models\RoomTypeAccommodation;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +24,8 @@ class DatabaseSeeder extends Seeder
             ['type' => 'Suite'],
         ]);
 
+        $roomTypeIds = RoomType::pluck('id', 'type');
+
         $accommodations = Accommodation::insert([
             ['type' => 'Sencilla'],
             ['type' => 'Doble'],
@@ -30,18 +33,36 @@ class DatabaseSeeder extends Seeder
             ['type' => 'Cuádruple'],
         ]);
 
+        $accommodationIds = Accommodation::pluck('id', 'type');
+
         $restrictions = [
-            'Estándar' => ['Sencilla', 'Doble'],
-            'Junior' => ['Triple', 'Cuádruple'],
-            'Suite' => ['Sencilla', 'Doble', 'Triple'],
+            $roomTypeIds['Estándar'] => [
+                $accommodationIds['Sencilla'],
+                $accommodationIds['Doble'],
+            ],
+            $roomTypeIds['Junior'] => [
+                $accommodationIds['Triple'],
+                $accommodationIds['Cuádruple'],
+            ],
+            $roomTypeIds['Suite'] => [
+                $accommodationIds['Sencilla'],
+                $accommodationIds['Doble'],
+                $accommodationIds['Triple'],
+            ],
         ];
 
-        foreach ($hotels as $hotel) {
-            foreach ($restrictions as $roomType => $validAccommodations) {
-                $roomTypeId = RoomType::where('type', $roomType)->value('id');
-                $accommodationIds = Accommodation::whereIn('type', $validAccommodations)->pluck('id');
+        foreach ($restrictions as $roomTypeId => $validAccommodationIds) {
+            foreach ($validAccommodationIds as $accommodationId) {
+                RoomTypeAccommodation::create([
+                    'room_type_id' => $roomTypeId,
+                    'accommodation_id' => $accommodationId,
+                ]);
+            }
+        }
 
-                foreach ($accommodationIds as $accommodationId) {
+        foreach ($hotels as $hotel) {
+            foreach ($restrictions as $roomTypeId => $validAccommodationIds) {
+                foreach ($validAccommodationIds as $accommodationId) {
                     Room::factory()->create([
                         'hotel_id' => $hotel->id,
                         'room_type_id' => $roomTypeId,

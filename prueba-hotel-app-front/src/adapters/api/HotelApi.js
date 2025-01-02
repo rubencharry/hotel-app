@@ -11,6 +11,16 @@ const HotelApi = {
     }
   },
 
+  async getHotelById(id) {
+    try {
+      const response = await axiosInstance.get(`/get-hotel-by-id/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error al obtener hotel:", error.response || error.message);
+      throw new Error("No se pudo obtener el hotel.");
+    }
+  },
+
   async createHotel(hotel) {
     try {
       const response = await axiosInstance.post("/create-hotel", hotel);

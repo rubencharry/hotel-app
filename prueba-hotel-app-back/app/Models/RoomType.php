@@ -19,4 +19,14 @@ class RoomType extends Model
     {
         return $this->hasMany(Room::class, 'room_type_id');
     }
+
+    public function accommodations()
+    {
+        return $this->belongsToMany(
+            Accommodation::class,
+            'room_type_accommodations',
+            'room_type_id',
+            'accommodation_id'
+        );
+    }
 }
