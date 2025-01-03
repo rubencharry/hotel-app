@@ -3,7 +3,7 @@ import axiosInstance from "./AxiosInstance";
 const RoomTypeApi = {
   async getRoomTypes() {
     try {
-      const response = await axiosInstance.get('/get-room-types/');
+      const response = await axiosInstance.get('/get-room-types');
       return response.data;
     } catch (error) {
       console.error("Error al obtener los tipos de habitación:", error.response || error.message);

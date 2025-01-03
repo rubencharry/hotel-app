@@ -34,7 +34,7 @@ class RoomController extends Controller
 
     public function update(Request $request, $id)
     {
-        return $room;
+        return $this->roomService->updateRoom($id, $request->all());
     }
 
     public function delete($id)

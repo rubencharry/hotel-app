@@ -91,7 +91,11 @@ export default {
       }
     },
     createHotel() {
-      this.$router.push({ name: "CreateHotel" });
+      try {
+    this.$router.push({ name: "CreateHotel" });
+    } catch (error) {
+      console.error("Error al redirigir a CreateHotel:", error);
+    }
     },
     viewDetail(hotelId) {
       this.$router.push({ name: "HotelDetail", params: { id: hotelId } });

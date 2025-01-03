@@ -65,6 +65,8 @@ export default {
   mounted() {
     if (this.isEditing) {
       this.loadHotel();
+    }else{
+      this.loading = false;
     }
   },
   methods: {
