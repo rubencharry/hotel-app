@@ -81,7 +81,7 @@ El proyecto se desarrolló empleando un arquitectura hexagonal, además de encon
   ```
 
 #### 4. Actualizar un hotel
-- **URL:** `PUT /api/update-hotel/{id}`
+- **URL:** `POST /api/update-hotel/{id}`
 - **Descripción:** Actualiza la información de un hotel existente.
 - **Parámetros de ruta:**  
   - `id`: ID del hotel.
@@ -128,7 +128,7 @@ El proyecto se desarrolló empleando un arquitectura hexagonal, además de encon
   ```
 
 #### 4. Actualizar una habitación
-- **URL:** `PUT /api/update-room/{id}`
+- **URL:** `POST /api/update-room/{id}`
 - **Descripción:** Actualiza los datos de una habitación específica.
 - **Parámetros de ruta:**  
   - `id`: ID de la habitación.
@@ -162,8 +162,6 @@ El proyecto se desarrolló empleando un arquitectura hexagonal, además de encon
 
 ### :back: Backend
 - Inicialmente clona el repositorio que incluye solo el back:
-
-   `git clone https://github.com/rubencharry/back-hotel-app` 
 
 - Ejecuta el siguiente comando para instalar las dependencias de la aplicación: 
 
@@ -205,8 +203,6 @@ El proyecto se desarrolló empleando un arquitectura hexagonal, además de encon
 
 ### :bricks: Frontend:
 - Inicialmente clona el repositorio que incluye solo el front:
-
-   `https://github.com/rubencharry/front-hotel-app`
 
 - Configura las variables de entorno con la url en donde se encuentra desplegada la api del back
 
