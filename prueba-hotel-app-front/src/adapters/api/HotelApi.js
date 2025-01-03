@@ -33,7 +33,7 @@ const HotelApi = {
 
   async updateHotel(id, hotel) {
     try {
-      const response = await axiosInstance.put(`/update-hotel/${id}`, hotel);
+      const response = await axiosInstance.post(`/update-hotel/${id}`, hotel);
       return response.data;
     } catch (error) {
       console.error("Error al actualizar el hotel:", error.response || error.message);

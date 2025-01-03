@@ -33,7 +33,7 @@ const RoomApi = {
 
   async updateRoom(id, room) {
     try {
-      const response = await axiosInstance.put(`/update-room/${id}`, room);
+      const response = await axiosInstance.post(`/update-room/${id}`, room);
       return response.data;
     } catch (error) {
       console.error("Error al actualizar la habitación:", error.response || error.message);
