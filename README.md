@@ -35,7 +35,130 @@ El proyecto se desarrolló empleando un arquitectura hexagonal, además de encon
 ### :house: Infraestructura:
 - **AWS EC2**: Despliegue del sistema en la nube.
 
+## :briefcase: Base de datos
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/a426d168-f2d7-458e-9369-1d4277d3d11c" alt="img readme" width="350px">
+</div>
+
+## :dependabot: Endpoints:
+
+### **Hotels**
+#### 1. Obtener todos los hoteles
+- **URL:** `GET /api/get-all-hotels`
+- **Descripción:** Devuelve una lista de todos los hoteles registrados.
+- **Ejemplo de respuesta:**  
+  ```json
+  [
+    {
+      "id": 1,
+      "name": "Hotel Decameron",
+      "address": "Calle 23 58-25",
+      "city": "Cartagena",
+      "nit": "12345678-9",
+      "max_rooms": 42
+    }
+  ]
+  ```
+
+#### 2. Obtener un hotel por ID
+- **URL:** `GET /api/get-hotel-by-id/{id}`
+- **Descripción:** Devuelve los datos de un hotel específico.
+- **Parámetros de ruta:**  
+  - `id`: ID del hotel.
+
+#### 3. Crear un hotel
+- **URL:** `POST /api/create-hotel`
+- **Descripción:** Crea un nuevo hotel.
+- **Cuerpo de la solicitud:**  
+  ```json
+  {
+    "name": "Hotel Decameron",
+    "address": "Calle 23 58-25",
+    "city": "Cartagena",
+    "nit": "12345678-9",
+    "max_rooms": 42
+  }
+  ```
+
+#### 4. Actualizar un hotel
+- **URL:** `PUT /api/update-hotel/{id}`
+- **Descripción:** Actualiza la información de un hotel existente.
+- **Parámetros de ruta:**  
+  - `id`: ID del hotel.
+- **Cuerpo de la solicitud:**  
+  ```json
+  {
+    "name": "Hotel Decameron Actualizado",
+    "address": "Calle Nueva 45-67"
+  }
+  ```
+
+#### 5. Eliminar un hotel
+- **URL:** `DELETE /api/delete-hotel/{id}`
+- **Descripción:** Elimina un hotel específico.
+- **Parámetros de ruta:**  
+  - `id`: ID del hotel.
+
+---
+
+### **Rooms**
+#### 1. Obtener habitaciones de un hotel
+- **URL:** `GET /api/get-rooms/{hotel_id}`
+- **Descripción:** Devuelve las habitaciones asociadas a un hotel específico.
+- **Parámetros de ruta:**  
+  - `hotel_id`: ID del hotel.
+
+#### 2. Obtener una habitación por ID
+- **URL:** `GET /api/get-room-by-id/{id}`
+- **Descripción:** Devuelve los datos de una habitación específica.
+- **Parámetros de ruta:**  
+  - `id`: ID de la habitación.
+
+#### 3. Crear una habitación
+- **URL:** `POST /api/create-room`
+- **Descripción:** Crea una nueva habitación.
+- **Cuerpo de la solicitud:**  
+  ```json
+  {
+    "hotel_id": 2,
+    "room_type_id": 2,
+    "accommodation_id": 4,
+    "quantity": 1
+  }
+  ```
+
+#### 4. Actualizar una habitación
+- **URL:** `PUT /api/update-room/{id}`
+- **Descripción:** Actualiza los datos de una habitación específica.
+- **Parámetros de ruta:**  
+  - `id`: ID de la habitación.
+- **Cuerpo de la solicitud:**  
+  ```json
+  {
+    "room_type_id": 3,
+    "accommodation_id": 1,
+    "quantity": 500
+  }
+  ```
+
+#### 5. Eliminar una habitación
+- **URL:** `DELETE /api/delete-room/{id}`
+- **Descripción:** Elimina una habitación específica.
+- **Parámetros de ruta:**  
+  - `id`: ID de la habitación.
+
+---
+
+### **Accommodations**
+#### 1. Obtener tipos de alojamiento por tipo de habitación
+- **URL:** `GET /api/get-accommodation-by-room-type`
+- **Descripción:** Devuelve una lista de alojamientos relacionados con un tipo de habitación específico.
+
+---
+
 ## :open_umbrella: Proceso de despliegue
+
+> **Nota:** Asegúrate de tener php 8.2 o superior y composer para el despliegue del back y nodejs para desplegar el front.
 
 ### :back: Backend
 - Inicialmente clona el repositorio que incluye solo el back:
@@ -81,6 +204,40 @@ El proyecto se desarrolló empleando un arquitectura hexagonal, además de encon
   > **Nota:** Asegúrate de contar con las extensiones pdo_pgsql y pgsql en tu archivo php.ini.
 
 ### :bricks: Frontend:
+- Inicialmente clona el repositorio que incluye solo el front:
+
+   `https://github.com/rubencharry/front-hotel-app`
+
+- Configura las variables de entorno con la url en donde se encuentra desplegada la api del back
+
+  `VITE_API_URL=tu_url_desplegada`
+
+- Ejecuta el siguiente comando para instalar las dependencias de la aplicación: 
+
+  `npm install`
+
+- Compila el proyecto para producción con:
+
+  `npm run build`
+
+ Este comando generará una carpeta llamada dist que contiene los archivos listos para ser desplegados. Allí se encuentra el index.html donde está toda la aplicación lista. 
+
+## :rainbow: Proyecto desplegado 
+
+Tanto front como back fueron desplegados en un servidor EC2 de AWS. Puedes ver el front en la siguiente IP:
+
+http://3.135.204.206/
+
+Y el back para probar los endpoints:
+
+http://18.117.160.225/
+
+
+
+
+
+
+
 
 
 
